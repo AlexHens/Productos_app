@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:productos_app/providers/login_form_provider.dart';
 import 'package:productos_app/widgets/widgets.dart';
@@ -6,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../services/services.dart';
 import '../ui/input_decoration.dart';
 
-class LoginScreen extends StatelessWidget {
+class ResgisterScreen extends StatelessWidget {
    
   
   @override
@@ -23,7 +25,7 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 10,),
-                    Text('Login', style: Theme.of(context).textTheme.headline4,),
+                    Text('¿Ya tienes cuenta?', style: Theme.of(context).textTheme.headline4,),
                     SizedBox(height: 30,),
 
                     ChangeNotifierProvider(
@@ -37,12 +39,12 @@ class LoginScreen extends StatelessWidget {
 
               SizedBox(height: 50,),
               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+                onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder())
                 ),
-                child: Text('Crear una nueva cuenta', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                child: Text('¿Ya tienes una cuenta?', style: TextStyle(fontSize: 18, color: Colors.black87),),
               ),
               SizedBox(height: 50,),
 
@@ -135,17 +137,16 @@ class _LoginForm extends StatelessWidget {
 
                 loginForm.isLoading = true;
 
-                final String? errorMessage = await authService.login(loginForm.email, loginForm.password);
+                final String? errorMessage = await authService.createUser(loginForm.email, loginForm.password);
 
                 if(errorMessage == null){
                   Navigator.pushReplacementNamed(context, 'home');
                 }
                 else{
-                  //print(errorMessage);
-                  NotificationService.showSnackbar(errorMessage);
+                  print(errorMessage);
                   loginForm.isLoading = false;
                 }
-                
+
               }
             ),
 
